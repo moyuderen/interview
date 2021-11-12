@@ -7,6 +7,7 @@
 // }, err => {
 //     console.log(err)
 // })
+
 const PENDING = 'PENDING'
 const FULFILLED = 'FULFILLED'
 const REJECTED = 'REJECTED'
