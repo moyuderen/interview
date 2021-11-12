@@ -1,0 +1,4 @@
+{
+    "editor.someSetting": true,
+    "markdownlint.run": "onSave"
+}
