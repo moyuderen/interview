@@ -65,3 +65,4 @@ tags: ['好文推荐']
 
 1. [在输入框实现@ At功能的一些思考](https://mp.weixin.qq.com/s/cvernUx54savw_J74InCsA)
 2. [数据结构与算法之美](https://time.geekbang.org/column/article/41013?cid=100017301)
+3. [sendBeacon 卸载文档时发送请求，用于打点统计](https://developer.mozilla.org/zh-CN/docs/Web/API/Navigator/sendBeacon)
