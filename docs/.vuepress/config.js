@@ -2,7 +2,7 @@ const sidebar = require('./sidebar.js')
 const nav = require('./nav.js')
 
 module.exports = {
-    // base: '/interview/',
+    // base: '/interview/', 没有自定义域名，直接使用github pages时使用
     head: [
         ['link', { rel: 'icon', href: 'favicon.ico' }],
     ],
