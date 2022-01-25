@@ -29,6 +29,10 @@ module.exports = [
         link: '/practice/empty/'
     },
     {
+        text: '学习',
+        link: '/learn/'
+    },
+    {
         text: '知识脑图',
         link: '/knowledge-map/'
     },

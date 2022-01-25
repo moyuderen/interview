@@ -21,14 +21,18 @@ tags: ['前端基础','js', 'css', 'html']
 - video
 - SVG
 
-## h5中的新的属性
+## h5中的新的属性和方法
 
 ### Canvas
 
-### WebSockets
+### WebSocket
 
 ### draggable 拖拽api
 
 ### Web Workers API
 
 ### Web Storage API
+
+### history api (路由 )
+
+### requestAnimationFrame
