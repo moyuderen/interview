@@ -994,6 +994,32 @@ function deepClone(target, map = new WeakMap()) {
         return target;
     }
 }
+
+const targetMap = new Map()
+
+function deepClone(target, targetMap) {
+    if (!isObject(target)) {
+        return target
+    }
+    // 解决特殊类型
+    const Constructor = target.constructor
+    if (target instanceof Constructor) {
+        return new Constructor(target)
+    }
+
+    if(targetMap.get(target)) {
+        return targetMap.get(target)
+    }
+
+    let result = Array.isArray(target) ? [] : {}
+
+    targetMap.set(target, result)
+
+    Reflect.ownKeys(target).forEach(key => {
+        result[key] = deepClone(target[key], targetMap)
+    })
+    return result
+}
 ```
 
 ## 事件循环

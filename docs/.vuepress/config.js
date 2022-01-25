@@ -2,7 +2,7 @@ const sidebar = require('./sidebar.js')
 const nav = require('./nav.js')
 
 module.exports = {
-    base: '/interview/',
+    // base: '/interview/',
     head: [
         ['link', { rel: 'icon', href: 'favicon.ico' }],
     ],
