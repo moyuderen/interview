@@ -78,7 +78,7 @@ tags: ['前端基础','js', 'css', 'html']
 ![浏览器缓存图](/interview/浏览器缓存.png)
 
 - 强缓存
-    1. Expires http 1的产物， 更改本地时间会时效
+    1. Expires http 1的产物， 更改本地时间会时效；是个时间对象（expires: Mon, 06 Feb 2023 04:27:20 GMT）
     2. Cache-Control
 
         - public：所有内容都将被缓存（客户端和代理服务器都可缓存）。具体来说响应可被任何中间节点缓存，如 Browser <-- proxy1 <-- proxy2 <-- Server，中间的proxy可以缓存资源，比如下次再请求同一资源proxy1直接把自己缓存的东西给 Browser 而不再向proxy2要。
@@ -126,6 +126,8 @@ tags: ['前端基础','js', 'css', 'html']
     [彻底理解浏览器的缓存机制](https://juejin.cn/post/6844903593275817998)
 
 ## 回流和重绘
+
+[浏览器的回流与重绘 (Reflow & Repaint)](https://juejin.cn/post/6844903569087266823)
 
 ## 三次握手，四次挥手
 

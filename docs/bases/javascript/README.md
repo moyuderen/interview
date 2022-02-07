@@ -21,6 +21,8 @@ ECMAScript中，闭包指的是：
 
 ## this
 
+[JavaScript深入之从ECMAScript规范解读this](https://github.com/mqyqingfeng/Blog/issues/7)
+
 ## 对象继承
 
 [JavaScript深入之继承的多种方式和优缺点](https://github.com/mqyqingfeng/Blog/issues/16)
@@ -417,27 +419,36 @@ function interval(cb, time) {
 //     setTimeout(agruments.callee, 200)
 // }, 200)
 
-function mySetIntervall(fn, time) {
+function setInterval(fn, interval) {
     let timer = null
-    let isClear = false
+    let clear = false
 
-    function interval() {
-        if (isClear) {
-            clearTimeout(timer)
+    function run() {
+        if (clear) {
             return
         }
 
+        timer = setTimeout(() => {
+            run()
+        }, interval);
         fn()
-        timer = setTimeout(interval, time)
     }
 
-    fn()
-    timer = setTimeout(interval, time)
+    run()
 
     return () => {
-        isClear = true
+        clear = true
+        timer = null
     }
 }
+
+const cancel = setInterval(() => {
+    console.log('log....')
+}, 2000)
+
+setTimeout(() => {
+    cancel()
+}, 20000);
 ```
 
 ## 手写-实现一个对象的 flatten 方法
@@ -1391,6 +1402,14 @@ function flat4(arr) {
 ## 垃圾回收机制 GC
 
 [垃圾回收机制](https://juejin.cn/post/6844904016325902344)
+
+> 面试话术：（要有逻辑性）
+>>
+>> - 说到垃圾回收机制，就要谈到内存的生命周期（内存的分配，使用，释放）
+>> - v8的垃圾回收策略是分代回收（新生代，老生代）
+>> - 新生代：1. from, to空间，晋升，25%，空间小，及时清楚
+>> - 老生代：标记（根节点逐层访问到，则是还在引用）清除，标记整理，内存碎片，全停顿（增量标记）
+>> - 避免的方式： 避免全局挂载变量，减少闭包，定时器计时器及时清除，dom引用要手动清除
 
 - 内存生命周期
     1. 分配内存

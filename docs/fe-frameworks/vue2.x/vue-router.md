@@ -7,6 +7,10 @@ tags: ['框架', 'vue', 'vue2.x', 'vue-router']
 
 ## 原理
 
+[vue-router源码](https://github.com/vuejs/vue-router)
+
+[vue-router源码调试](https://github.dev/vuejs/vue-router)
+
 [vue路由](https://zhuanlan.zhihu.com/p/27588422)
 
 - mode:base hash history

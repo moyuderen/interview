@@ -5,6 +5,11 @@ description: 'vue2.x'
 tags: ['框架', 'vue', 'vue2.x']
 ---
 
+
+## vue和react区别
+
+## vite 和 webpack
+
 ## 源码解析
 
 1. [vue源码解析](https://github.com/answershuto/learnVue)

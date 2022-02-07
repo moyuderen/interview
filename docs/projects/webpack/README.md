@@ -7,6 +7,15 @@ tags: ['项目问题', '项目', 'webpack']
 
 ## webpack
 
+### vite webpack
+
+[Vite和Webpack的核心差异](https://cloud.tencent.com/developer/article/1801741)
+
+### webpack中的hash、chunkhash和contenthash
+
+[webpack中的hash、chunkhash和contenthash](https://blog.csdn.net/major_zhang/article/details/103372987)
+[webpack 中，hash、chunkhash、contenthash 的区别是什么？](https://www.1024sou.com/article/289015.html)
+
 ### webpack-HRM原理
 
 ![webpack-HRM原理](./HMR.png)
@@ -56,6 +65,8 @@ module.exports = {
 };
 ```
 
+### vite 和 webpack
+
 ### 玩转webpackppt
 
 1. [玩转webpackppt 第一章](/interview/玩转webpackppt第一章.pdf)
@@ -66,3 +77,33 @@ module.exports = {
 6. [玩转webpackppt 第六章](/interview/玩转webpackppt第六章.pdf)
 7. [玩转webpackppt 第七章](/interview/玩转webpackppt第七章.pdf)
 8. [玩转webpackppt 第八章](/interview/玩转webpackppt第八章.pdf)
+
+## vite
+
+Vite 原理
+
+vite主要通过 **esbuild预构建依赖**和**让浏览器接管部分打包程序**两种手段解决了这两个问题，下面细讲这两大手段。
+
+#### esbuild预构建依赖
+
+vite将代码分为源码和依赖两部分并分别处理，所谓依赖便是应用使用的第三方包，一般存在于node_modules目录中，一个较大项目的依赖及其依赖的依赖，加起来可能达到上千个包，这些代码可能远比我们源码代码量要大，这些依赖通常是不会改变的（除非你要进行本地依赖调试），所以无论是webpack或者vite在启动时都会编译后将其缓存下来。区别的是，vite会使用esbuild进行依赖编译和转换（commonjs包转为esm），而webpack则是使用acorn或者tsc进行编译，而esbuild是使用Go语言写的，其速度比使用js编写的acorn速度要快得多。
+
+esbuild官方做了一个测试，打包生产环境的three.js包十次，上图是各大工具的打包时长。esbuild在打包速度上比现在前端打包工具快10-100倍。
+
+而且vite在打包之后，还会对这些依赖包的请求设置cache-control: max-age=31536000,immutable;,即设置了强缓存，之后针对依赖的请求将不会到达服务器。如果要进行依赖调试，可以在启动服务器时使用 --force 标志
+
+#### 让浏览器接管部分打包
+
+Bundle based dev server在启动时时会把全部的源码都编译，当一个项目有很多路由页面时，它也会按照每一个路由入口查找编译所有模块，但实际上我们是否需要在启动的时候就打包所有的模块源码？
+
+在启动的时候，vite并不会打包源码，而是在浏览器请求路由时才会进行打包，而且也仅仅打包当前路由的源码，这相当于让浏览器掌握了打包的控制权。从而将Bundle based dev server一次性打包全部源码的操作改为了多次，启动速度无疑会快非常多，并且在访问时转换的速度也不会慢下来，因为每次转换的源码只有当前路由下的；并且源码模块还会设置协商缓存，当模块没有改变时，浏览器的请求会返回304 Not Modified。
+
+![Bundle based dev serve](https://www.vitejs.net/assets/bundler.37740380.png)
+
+![ESM](https://www.vitejs.net/assets/esm.3070012d.png)
+
+这一切的前提是基于原生的ES Module,浏览器在处理ES6 Module时，该模块中所有import进来的module都会通过http请求抓取，并且其请求是精确有序的。ESM还对vite的HMR起了非常大的作用。当源码文件修改时，因为源码采取的是ESM,vite只需要精确地使当前修改模块与其最近的HMR边界失效，大多数情况只需要替换当前修改的模块，这让vite的HMR直接与当前应用的大小没有关系。无论应用多大，都能保持快速的更新速度。
+
+### 参考
+
+[vite 原理详解](https://blog.csdn.net/huangyilinnuli/article/details/117757135)
