@@ -232,7 +232,7 @@ tags: ['实战真题', '面试题实战']
     2. 子元素的的属性，
     3. flex:1 是什么的缩写
     4. 垂直水平居中
-7. vue tempele的解析过程
+7. vue [tempele的解析过程](https://blog.nowcoder.net/n/57623d6fe8574541907b410195d56f1d)
 8. [多个异步同时拿到数据的解决方案 多种（哨兵）](https://segmentfault.com/a/1190000012357567)； [asyc/await 替代](https://segmentfault.com/a/1190000020100107)
 9. let
 10. ts
@@ -555,3 +555,46 @@ tags: ['实战真题', '面试题实战']
 - 开发流程
 - 代码可读性 可维护性
 - 如何保证代码质量
+
+## 58 二手车业务
+
+- [js 延迟执行的办法](https://www.cnblogs.com/songForU/p/10905031.html)
+- 深拷贝
+- 继承
+- 原型链
+- **webpack的优化 第三方包的处理**
+- **vue2 vue3响应式原理**
+- **native sdk原理**； 封装  id
+- css 三角形，三列布局，
+- 输入地址到渲染发生了什么
+- 浏览器的缓存机制
+- 事件循环机制 与Node的区别
+- 是否有Node的开发经验
+- ts的语法 装饰器
+
+    ```ts
+    interface City {
+        
+    }
+
+    type Status = 1 | 2 | 3
+
+    declare module '*vue' {
+        import Vue from 'vue'
+        return Vue
+    }
+
+    declare const Env: string
+    
+    enum Status {
+        Start: 1
+        Prograsss: 2
+        End: 3
+    }
+
+    class Parent {
+
+    }
+    ```
+
+- 移动端的适配 rem
