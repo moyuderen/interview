@@ -122,6 +122,11 @@ tags: ['项目问题', '项目']
 
 阅读tracker源码
 
+fetch
+ajax
+image图片上报
+Navigator.sendBeacon()
+
 ### 性能监控
 
 利用`window.performance`来统计

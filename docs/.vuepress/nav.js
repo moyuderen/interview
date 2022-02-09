@@ -26,7 +26,8 @@ module.exports = [
     },
     {
         text: '实战真题',
-        link: '/practice/empty/'
+        // link: '/practice/empty/'
+        link: '/practice/'
     },
     {
         text: '学习',

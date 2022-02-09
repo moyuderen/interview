@@ -1,15 +1,11 @@
 ---
-title: 'webpack'
+title: 'webpack &&  vite'
 navbar: true
-description: 'webpack'
-tags: ['项目问题', '项目', 'webpack']
+description: 'webpack vite'
+tags: ['项目问题', '项目', 'webpack', 'vite']
 ---
 
 ## webpack
-
-### vite webpack
-
-[Vite和Webpack的核心差异](https://cloud.tencent.com/developer/article/1801741)
 
 ### webpack中的hash、chunkhash和contenthash
 
@@ -23,25 +19,59 @@ tags: ['项目问题', '项目', 'webpack']
 ### Tree-shaking
 
 [Tree-Shaking性能优化实践 - 原理篇](https://juejin.cn/post/6844903544756109319)
+
 [Tree-Shaking性能优化实践 - 实践篇](https://juejin.cn/post/6844903544760336398)
 
-### webpack优化
-
-1. webpack自带tree shaking(去除无用代码)
-2. uglifyjs(代码压缩混淆)/terser-webpack-plugin
-3. include exclude
-4. alias 别名@
-5. extensions 出现频率较高的文件后缀
-6. happyPack 多进程loader转换/terser-webpack-plugin
-7. dll 抽离第三方模块 我们都不希望这个开发的主力框架每次都被打包一遍，这样也是费时费力的事情; 如react, vue ,等不需要修改的库；add-asset-html-webpack-plugin 在index.html引入dll
-8. webpack-bundle-analyzer 明确使用的包
-9. CDN 在html文件中引入cdn文件，在webpack配置 externals，这样就不会打包引入的cdn的库;html-webpack-externals-plugin插入CDN文件到index.html
-10. noParse noParse的作用是不去解析你所使用的第三方库中的依赖库
-11. IgnorePlugin 忽略打包第三方模块指定的目录
-12. webpack-dev-server 热更新和代理
-13. webpack4中自带了抽取公共代码的方法，通过optimization里的splitChunks来做到 如lodash, vue, vuex, react, react-dom第三方库
+### **webpack优化**
 
 [带你深度解锁Webpack系列(优化篇)](https://juejin.cn/post/6844904093463347208)
+
+- webpack自带**tree shaking**(去除无用代码)
+- uglifyjs(代码压缩混淆)/**terser-webpack-plugin**（推荐使用）
+多进程压缩 当前 Webpack 默认使用的是 **TerserWebpackPlugin**
+- **include exclude** 缩小查找的范围
+- alias 别名@
+- **extensions** 出现频率较高的文件后缀
+- happyPack（已经无人维护） 多进程loader转换**thread-loader**
+- **HardSourceWebpackPlugin** HardSourceWebpackPlugin 为模块提供中间缓存，缓存默认的存放路径是: node_modules/.cache/hard-source。
+配置 hard-source-webpack-plugin，首次构建时间没有太大变化，但是第二次开始，构建时间大约可以节约 80%。
+- 在一些性能开销较大的 loader 之前添加 cache-loader
+- dll 抽离第三方模块 我们都不希望这个开发的主力框架每次都被打包一遍，这样也是费时费力的事情; 如react, vue ,等不需要修改的库；add-asset-html-webpack-plugin 在index.html引入dll
+- **CDN** 在html文件中引入cdn文件，在webpack配置 externals，这样就不会打包引入的cdn的库;html-webpack-externals-plugin插入CDN文件到index.html
+
+```js
+plugins: [
+        new HtmlWebpackExternalsPlugin({
+          externals: [{
+            module: 'vue',
+            entry: 'https://lib.baomitu.com/vue/2.6.12/vue.min.js',
+            global: 'Vue'
+          }]
+        })
+    ],
+```
+
+或者直接配置externals：然后在html中手动添加cdn地址
+
+```js
+module.exports = {
+    // 其它省略...
+    externals: {
+        vue: 'Vue'
+    },
+    // 其它省略...
+}
+```
+
+- noParse noParse的作用是不去解析你所使用的第三方库中的依赖库
+- IgnorePlugin 忽略打包第三方模块指定的目录
+- webpack4中自带了抽取公共代码的方法，通过**optimization**里的**splitChunks**来做到 如lodash, vue, vuex, react, react-dom第三方库
+
+开发环境
+
+- **webpack-bundle-analyzer** 明确使用的包
+- **speed-measure-webpack-plugin** 分析打包时间
+- webpack-dev-server 热更新和代理
 
 ### webpack如何分包
 
@@ -65,8 +95,6 @@ module.exports = {
 };
 ```
 
-### vite 和 webpack
-
 ### 玩转webpackppt
 
 1. [玩转webpackppt 第一章](/interview/玩转webpackppt第一章.pdf)
@@ -80,11 +108,15 @@ module.exports = {
 
 ## vite
 
-Vite 原理
+### vite webpack
+
+[Vite和Webpack的核心差异](https://cloud.tencent.com/developer/article/1801741)
+
+Vite 原理 [vite 原理详解](https://blog.csdn.net/huangyilinnuli/article/details/117757135)
 
 vite主要通过 **esbuild预构建依赖**和**让浏览器接管部分打包程序**两种手段解决了这两个问题，下面细讲这两大手段。
 
-#### esbuild预构建依赖
+### esbuild预构建依赖
 
 vite将代码分为源码和依赖两部分并分别处理，所谓依赖便是应用使用的第三方包，一般存在于node_modules目录中，一个较大项目的依赖及其依赖的依赖，加起来可能达到上千个包，这些代码可能远比我们源码代码量要大，这些依赖通常是不会改变的（除非你要进行本地依赖调试），所以无论是webpack或者vite在启动时都会编译后将其缓存下来。区别的是，vite会使用esbuild进行依赖编译和转换（commonjs包转为esm），而webpack则是使用acorn或者tsc进行编译，而esbuild是使用Go语言写的，其速度比使用js编写的acorn速度要快得多。
 

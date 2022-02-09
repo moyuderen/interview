@@ -598,3 +598,28 @@ tags: ['实战真题', '面试题实战']
     ```
 
 - 移动端的适配 rem
+
+## moka
+
+- 项目中遇到的坑
+
+- 实现一个JSON.stringify
+
+```js
+// 换行，逗号，缩进（记录深度），括号
+
+var data = {
+    a: 1,
+    b: [
+        1,
+        2,
+        {
+            m: 1,
+        }
+    ],
+}
+
+stringify(data)
+
+JSON.stringify(data, null, 2)
+```
