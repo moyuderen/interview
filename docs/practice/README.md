@@ -623,3 +623,177 @@ stringify(data)
 
 JSON.stringify(data, null, 2)
 ```
+
+## 奇安信
+
+- vue3的优势
+- react hooks
+- vue2 vue3的原理，[依赖收集的时机](https://blog.csdn.net/gongye2019/article/details/119011390)
+- typescript的优势 代码质量？
+- 错误上报和收集，try{} catch{}能收集异步错误嘛？ unhandleReject能收集到setTimeout的错误嘛
+- react setData是异步的还是同步的
+
+## 开课吧
+
+## 一面
+
+```js
+function debounce(fn, wait) {
+    let timer = null
+
+    return function(args) {
+        if(timer) {
+            clearTimeout(timer)
+            return
+        }
+
+        timer = setTimeout(() => {
+            fn.call(this, ...args)
+        }, wait);
+    }
+}
+
+var arr = [1, 2, [3, [4, 5]]]
+
+// 1. es10 flat方法
+// 2. 
+function flat1(arr) {
+    let ret = []
+
+    function run(arr) {
+        arr.forEach(item => {
+            if(Array.isArray(item)) {
+                run(item)
+            }else {
+                ret.push(item)
+            }
+        });
+    }
+
+    run(arr)
+
+    return ret
+}
+
+// 3. stack
+function flat2(arr) {
+    let stack = [...arr]
+    let ret = []
+    if (stack.length) {
+        const last = stack.pop()
+        if(Array.isArray(last)) {
+            stack.concat(last)
+        }else {
+            ret.push(item)
+        }
+    }
+
+    return ret.reverse()
+}
+
+function foo(a) {
+    console.log(this, a)
+}
+
+var obj = {
+    m: 222
+}
+
+foo.call(obj, 1)
+Function.prototype.call = function (ctx = window, ...args) {
+    
+    ctx.fn = this
+    const result = ctx.fn(...args)
+    delete ctx.fn
+
+    return result
+}
+
+function isObject(val) {
+    return typeof val === 'object' && val !== null
+}
+
+const obj1 = {
+    a: 1,
+    b: {
+        m: 1,
+        n: [
+            1,
+            2,
+            {
+                q: 'q'
+            },
+        ]
+    },
+    p: obj1.b,
+    date: new Date('2022-02-11')
+}
+console.log(deepClone(obj1))
+
+function deepClone(target, map = new Map()) {
+    if(!isObject(target)) {
+        return target
+    }
+
+    const Constructor = target.constructor
+    if (target instanceof Constructor) {
+        return new Constructor(target)
+    }
+
+    if(map.has(target)) {
+        return map.get(target)
+    }
+
+    let result = Array.isArray(target) ? [] : {}
+
+    map.set(target, result)
+
+    Reflect.ownKeys(target).forEach(key => {
+        result[key] = deepClone(target[key], map)
+    });
+}
+
+// p1 instanceof Parent
+// P1.__proto__ === Parent.prototype
+
+function sleep(timeout) {
+    return new Promise((resolve, reject) => {
+        const id = setTimeout(() => {
+            clearTimeout(id)
+            resolve()
+        }, timeout);
+    })
+}
+
+function fetchData(url) {
+    return new Promise()
+}
+
+
+// 实现一个本地存储，超过1d后，重新请求接口更新数据
+```
+
+## umu
+
+- axios cancel 原理，保证正确的执行顺序
+
+    ```js
+    const CancelToken = axios.CancelToken
+    const source = CancelToken.source()
+
+    axios..get('get/username', {
+        cancelToken: source.token
+    })
+    ```
+
+    解析：
+
+- 项目的难点 分片上传
+- Promise.all 收集错误
+- webpack原理 （.vue, 等怎么转换为js文件）
+- vue3 composition api怎么实现的
+- 缓存
+- 离线化平台
+- requestAnimationFrame
+- 10000数据，数据多的时候怎么进行分片处理，不阻塞浏览器进程
+- 输入url到页面渲染 cssdom规范 em-px, 哪些显示哪些不展示

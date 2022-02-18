@@ -25,6 +25,8 @@ tags: ['好文推荐']
 8. :star: [2021」高频前端面试题汇总之JavaScript篇（上）](https://juejin.cn/post/6940945178899251230)
 9. [前端笔试面试题部分](https://github.com/paddingme/Front-end-Web-Development-Interview-Question) 4年没更新了
 10. [木易杨前端进阶](https://muyiy.cn/question/)
+11. [连八股文都不懂还指望在前端混下去么](https://juejin.cn/post/7016593221815910408#heading-85)
+12. [技术分享-博客](https://coderly.cn/pages/b61db9/#xss-%E8%B7%A8%E7%AB%99%E8%84%9A%E6%9C%AC%E6%94%BB%E5%87%BB)
 
 ### Promise
 

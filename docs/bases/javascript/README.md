@@ -1468,6 +1468,7 @@ function myInstacnceof1(cur, target) {
 
 function instanceOf(cur, target) {
     let prototype = target.prototype
+    // let proto = Object.getPrototypeOf(target) // 或者使用这种方式获取
     let proto = cur.__proto__
 
     while (proto) {

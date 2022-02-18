@@ -4,6 +4,7 @@ navbar: true
 description: 'vue3.x'
 tags: ['框架', 'vue', 'vue3.x']
 ---
+## [最新的vue面试题大全含源码级回答（vue3篇）](https://juejin.cn/post/6951262189168623623)
 
 ## function-api
 

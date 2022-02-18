@@ -7,6 +7,9 @@ tags: ['项目问题', '项目', 'webpack', 'vite']
 
 ## webpack
 
+[webpack原理](https://zhuanlan.zhihu.com/p/363928061)
+[webpack-dev-serve原理](https://segmentfault.com/a/1190000020310371)
+
 ### webpack中的hash、chunkhash和contenthash
 
 [webpack中的hash、chunkhash和contenthash](https://blog.csdn.net/major_zhang/article/details/103372987)
@@ -25,6 +28,45 @@ tags: ['项目问题', '项目', 'webpack', 'vite']
 ### **webpack优化**
 
 [带你深度解锁Webpack系列(优化篇)](https://juejin.cn/post/6844904093463347208)
+
+> 话术
+
+> webpack 优化：
+
+- 使用比较高版本的
+    1. 先进的语法
+    2. 自带的tree shaking
+
+- 资源搜索的速度
+
+    1. include exclude
+    2. externtions 常用包的追
+    3. 使用resolve alias:
+
+- 打包速度
+    1. noparse
+    2. thread - loader 多进程
+
+- 压缩速度
+
+    terser-webpack-plugin
+
+- CDN
+
+    externals: {
+        vue: 'vue'
+    }
+
+- 二次打包时间
+
+    1. cache-loader
+    2. hader-source-wabpack-plugin
+
+- 打包优化分析工具
+    webpack - bundle - analyzer
+    speed-mesure-webpack
+
+------------------------------------------------------------------------
 
 - webpack自带**tree shaking**(去除无用代码)
 - uglifyjs(代码压缩混淆)/**terser-webpack-plugin**（推荐使用）

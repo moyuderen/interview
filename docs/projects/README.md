@@ -5,6 +5,33 @@ description: '项目问题'
 tags: ['项目问题', '项目']
 ---
 
+## 项目介绍
+
+负责*****业务相关需求的开发，某业务的话就是从买家意向购买车，到车交到买家手上的流程；包括，相关材料的邮寄，车的物流，提档，落档，过户，接车（车况检查），交付顾问邀约客户最后的接待看车；完成交车；送车上门等流程；
+
+主要包括对车商的工单，提档落档，车商账单，
+
+对一线人员如交付顾问提供的工具应用，材料的邮寄接收，车况的记录等
+
+整个交付流程的crm后台，gps管理。手续材料，车务工单，交付任务，交付顾问带看工单，交付引擎
+
+## 项目难点
+
+- 上传组件，兼容多个app,包括测试时候的web环境，私有云，公有云，七牛金山云
+- 业务上各种表单提交比较多，入材料手续，快递材料，具体的车况信息等待；抽离封装
+- 流程图
+- 录音，视频
+  - h5
+    - h5录制状态
+    - 兜底时间30min, 客户端的同步（多次调用）
+    - 视频的分段，到达兜底时间的时候是否继续录制
+    - 多个接待看车任务的时候，只能有一个录制任务存在
+    - 退出webview页面的时候，状态会丢失；需要把录制状态，或者兜底时间存在native端（小的插曲，就是native对clear支持不是很好，经常会导致app崩溃，定位问题找了好久）
+      - 所以为了方便开发和调试，整理开发了一个用于native的交互的调试页面，上面包含了常用的交付api的调用；和打印出报错信息
+    - 外接设备的不稳定性，导致设备断开等问题，需要对这些特殊的边界情况进行处理，是重置状态，还是直接完成录制
+    - 业务过程中操作的不断升级，录制音频，智能眼镜。为了不对流程进行卡点，兼容多种的方式
+  - crm 播放，mp4和流
+
 ## 项目优化
 
 ### 首屏优化
@@ -64,9 +91,11 @@ tags: ['项目问题', '项目']
 
 ### 错误监控
 
-[常见的错误拦截]（<https://blog.fundebug.com/2018/12/07/how-to-handle-frontend-error/>）
+[JS错误捕获](https://juejin.cn/post/6844904113134632973)
+[如何处理 JavaScript 的异步捕获？](https://www.imyangyong.com/blog/2020/06/javascript/%E5%A6%82%E4%BD%95%E5%A4%84%E7%90%86%20JavaScript%20%E7%9A%84%E5%BC%82%E6%AD%A5%E6%8D%95%E8%8E%B7%EF%BC%9F/)
+[常见的错误拦截](https://blog.fundebug.com/2018/12/07/how-to-handle-frontend-error/)
 
-1. `window.onerror()`
+1. `window.onerror()` 可以捕获同步或者异步运行时的错误，但是不能捕获语法错误； 也不能捕获资源加载的和接口异常的错误
 
     ``` js
     window.onerror(message, source, lineno, colno, error){
@@ -79,8 +108,8 @@ tags: ['项目问题', '项目']
     ```
 
     - 如果想通过onerror函数收集不同域的js错误，我们需要做两件事：
-        - 相关的js文件上加上`Access-Control-Allow-Origin:*`的response header
-        - 引用相关的js文件时加上crossorigin属性
+    - 相关的js文件上加上`Access-Control-Allow-Origin:*`的response header
+    - 引用相关的js文件时加上crossorigin属性
 
 2. `unhandledrejection` 继承自 [`PromiseRejectionEvent`](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent)，而 [`PromiseRejectionEvent`](https://developer.mozilla.org/zh-CN/docs/Web/API/PromiseRejectionEvent) 又继承自 [`Event`](https://developer.mozilla.org/zh-CN/docs/Web/API/Event)。因此`unhandledrejection` 含有 `PromiseRejectionEvent` 和 `Event` 的属性和方法。
 
@@ -92,7 +121,39 @@ tags: ['项目问题', '项目']
     });
     ```
 
-3. try catch
+    - unhandledrejection 只能捕获未显式处理的Promise异常
+
+    ```js
+    // 能触发 unhandledrejection ，因为未显式处理
+    Promise.reject('test').then()
+
+    // 能触发 unhandledrejection ，因为未显式处理
+    Promise.reject('test').then(console.log)
+
+    // 不能触发 unhandledrejection ，因为已处理
+    Promise.reject('test').then(console.log, console.log)
+
+    // 不能触发 unhandledrejection ，因为没处理，直接抛出异常
+    Promise.reject('test')
+    ```
+
+    在 ES6 的 Promise 中，对于直接 reject 的异常未处理任务，不会进行错误提示：
+
+    ```js
+    const rejected = Promise.reject('err') // 直接报异常
+    ```
+
+    除非手动去处理一下：
+
+    ```js
+    const rejected = Promise.reject('err')
+
+    rejected.catch(function (err) {
+        console.log('catch', err)
+    })
+    ```
+
+3. try catch 只能捕获同步**运行**的错误，对**语法**和**异步**错误无法捕获
 
    ```js
    try {
@@ -102,21 +163,54 @@ tags: ['项目问题', '项目']
    }
    ```
 
-4. vue
+4. 接口请求的错误
+    - ajax
 
-5. [errorCaptured](https://cn.vuejs.org/v2/api/#errorCaptured)钩子
+    ```js
+    window.addEventListener('error', (e)=>{
+        console.log('addEventListener')
+        console.log(e)
+    }
+    ```
 
-6. sentry
+    - fetch
 
-   - 对window.onerror和unhandlerejection的重写
-   - 跨浏览的兼容
-   - [sentry原理](https://segmentfault.com/a/1190000023089675)
-   - [源码解析 知乎](https://zhuanlan.zhihu.com/p/75577689)
+    ```js
+    window.addEventListener("unhandledrejection", function(e) {
+        console.log('unhandledrejection')
+        console.log(e)
+    }, true);
+    ```
 
-   - window.onerror
-        - 只能捕获运行时错误
-        - 无法捕获语法错误
-        - 无法捕获资源加载错误（可使用window.addEventListener('error')  资源加载错误的节点活冒泡到window对象， 并且没法知道错误码）
+5. 资源加载错误`window.addEventListener('error',(e)=> {})`
+6. iframe
+
+    ```js
+    var frames = window.frames;
+    for (var i = 0; i < frames.length; i++) { 
+        frames[i].addEventListener('error', (e)=>{
+            console.log('addEventListener')
+            console.log(e)
+        }, true);
+    }
+
+```
+
+. vue
+
+- [errorCaptured](https://cn.vuejs.org/v2/api/#errorCaptured)钩子
+
+- sentry
+
+  - 对window.onerror和unhandlerejection的重写
+  - 跨浏览的兼容
+  - [sentry原理](https://segmentfault.com/a/1190000023089675)
+  - [源码解析 知乎](https://zhuanlan.zhihu.com/p/75577689)
+
+  - window.onerror
+    - 只能捕获运行时错误
+    - 无法捕获语法错误
+    - 无法捕获资源加载错误（可使用window.addEventListener('error')  资源加载错误的节点活冒泡到window对象， 并且没法知道错误码）
 
 ### 埋点监控
 

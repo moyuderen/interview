@@ -7,6 +7,7 @@ tags: ['框架', 'vue', 'vue2.x']
 
 
 ## vue和react区别
+
 ## 源码解析
 
 1. [vue源码解析](https://github.com/answershuto/learnVue)
@@ -168,6 +169,8 @@ var a = new Vue({
     }
 })
 ```
+
+## [Vue - _render 函数的实现](https://github.com/VenenoFSD/Blog/issues/8)
 
 ## nextTick
 

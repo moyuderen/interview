@@ -1130,3 +1130,44 @@ lruCache.prototype.get = function (key) {
     this.caches.set(key, value)
 }
 ```
+
+## add(1)(2)(3)
+
+```js
+function add (...args) {
+    //求和
+    return args.reduce((a, b) => a + b)
+}
+function currying (fn) {
+    let args = []
+    return function temp (...newArgs) {
+        if (newArgs.length) {
+            args = [
+                ...args,
+                ...newArgs
+            ]
+            return temp
+        } else {
+            let val = fn.apply(this, args)
+            args = [] //保证再次调用时清空
+            return val
+        }
+    }
+}
+let addCurry = currying(add)
+console.log(addCurry(1)(2)(3)(4, 5)())  //15
+console.log(addCurry(1)(2)(3, 4, 5)())  //15
+console.log(addCurry(1)(2, 3, 4, 5)())  //15
+
+```
+
+## 数组乱序
+
+```js
+var arr = [1,2,3,4,5,6,7,8,9,10];
+for (var i = 0; i < arr.length; i++) {
+  const randomIndex = Math.round(Math.random() * (arr.length - 1 - i)) + i;
+  [arr[i], arr[randomIndex]] = [arr[randomIndex], arr[i]];
+}
+console.log(arr)
+```
