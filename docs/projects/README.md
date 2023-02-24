@@ -193,8 +193,7 @@ tags: ['项目问题', '项目']
             console.log(e)
         }, true);
     }
-
-```
+    ```
 
 . vue
 
